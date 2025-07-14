@@ -1,56 +1,80 @@
 plotly
 import streamlit as st
 
-st.set_page_config(page_title="MBTI x 포켓몬 추천", page_icon="✨")
+st.set_page_config(page_title="포켓몬 인기 순위 TOP 10", page_icon="🔥")
 
-st.title("✨ MBTI로 알아보는 나와 어울리는 포켓몬")
-st.write("MBTI를 선택하면, 그 성격과 어울리는 포켓몬을 추천해드릴게요! 이미지와 함께 자세한 설명도 드려요.")
+st.title("🔥 가장 인기 많은 포켓몬 TOP 10")
+st.write("전 세계 팬들 사이에서 꾸준히 사랑받는 포켓몬 순위를 이미지와 함께 소개합니다!")
 
-mbti_types = [
-    "INTJ", "INTP", "ENTJ", "ENTP",
-    "INFJ", "INFP", "ENFJ", "ENFP",
-    "ISTJ", "ISFJ", "ESTJ", "ESFJ",
-    "ISTP", "ISFP", "ESTP", "ESFP"
+# 포켓몬 인기 순위 리스트 (이미지 + 설명 포함)
+popular_pokemon = [
+    {
+        "rank": 1,
+        "name": "피카츄",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png",
+        "desc": "포켓몬의 마스코트이자 전 세계에서 가장 인지도가 높은 포켓몬. 귀여운 외모와 긍정적인 에너지로 세대를 아우르며 사랑받고 있어요."
+    },
+    {
+        "rank": 2,
+        "name": "리자몽",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/006.png",
+        "desc": "불타는 날개와 강력한 외형으로 많은 팬들의 마음을 사로잡은 포켓몬. 애니메이션과 게임에서 주인공 포켓몬으로 자주 등장해요."
+    },
+    {
+        "rank": 3,
+        "name": "뮤츠",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/150.png",
+        "desc": "유전자 조작으로 탄생한 전설의 포켓몬. 냉정하고 강한 이미지, 깊은 내면의 고뇌가 많은 팬들에게 매력적으로 다가옵니다."
+    },
+    {
+        "rank": 4,
+        "name": "이브이",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/133.png",
+        "desc": "다양한 진화형을 가진 무한한 가능성의 상징. 귀여움과 유연함으로 많은 사람들이 가장 좋아하는 포켓몬 중 하나예요."
+    },
+    {
+        "rank": 5,
+        "name": "루카리오",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/448.png",
+        "desc": "쿨하고 민첩한 이미지로 인기 많은 격투·강철 타입 포켓몬. 애니메이션과 게임 양쪽에서 활약이 돋보여요."
+    },
+    {
+        "rank": 6,
+        "name": "게코가",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/658.png",
+        "desc": "닌자 개구리 콘셉트로 젊은 세대에게 특히 인기 많으며, 애니에서 주인공 파트너로 활약하며 큰 인기를 얻었어요."
+    },
+    {
+        "rank": 7,
+        "name": "푸린",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/039.png",
+        "desc": "귀엽지만 노래로 사람을 재우는 강력한(?) 능력 보유. 앙증맞은 외모와 반전 매력으로 인기를 끌고 있어요."
+    },
+    {
+        "rank": 8,
+        "name": "에브이",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/196.png",
+        "desc": "이브이의 진화형 중 하나로, 신비롭고 조용한 성격이 매력적. 예쁜 색감과 디자인으로 특히 인기 많습니다."
+    },
+    {
+        "rank": 9,
+        "name": "뮤",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/151.png",
+        "desc": "전설의 시작이라 불리는 포켓몬. 장난기 많고 귀엽지만 모든 기술을 쓸 수 있어 상징적인 존재예요."
+    },
+    {
+        "rank": 10,
+        "name": "갸라도스",
+        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/130.png",
+        "desc": "약한 잉어킹에서 강력한 갸라도스로 진화하는 서사 덕분에 감동과 카리스마를 모두 지닌 인기 포켓몬이에요."
+    },
 ]
 
-# 포켓몬 정보: 이름, 이미지 URL, 설명
-mbti_pokemon = {
-    "INTJ": {
-        "pokemon": "뮤츠",
-        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/150.png",
-        "reason": "INTJ는 전략적인 사고와 독립적인 성향을 가진 유형입니다. 뮤츠는 인공적으로 만들어졌지만 누구보다도 지능적이고 냉철한 판단력을 지닌 포켓몬으로, 효율성과 목표 지향적인 면에서 INTJ와 완벽하게 어울립니다."
-    },
-    "INTP": {
-        "pokemon": "프리져",
-        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/144.png",
-        "reason": "INTP는 탐구심이 강하고 논리적이며, 독립적인 사고를 중시합니다. 프리져는 신비로운 외형과 고요한 분위기를 지닌 전설의 포켓몬으로, INTP처럼 혼자서 깊은 사유에 빠지는 모습이 잘 어울립니다."
-    },
-    "ENTJ": {
-        "pokemon": "갸라도스",
-        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/130.png",
-        "reason": "ENTJ는 리더십이 뛰어나고 강한 추진력을 가진 유형입니다. 갸라도스는 평범한 잉어킹에서 진화하여 강력한 존재가 되듯, ENTJ도 자신의 능력과 결단력으로 환경을 장악해 나갑니다."
-    },
-    "ENTP": {
-        "pokemon": "피카츄",
-        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/025.png",
-        "reason": "ENTP는 창의적이고 사교성이 풍부하며, 늘 새로운 것을 시도하려 합니다. 피카츄는 호기심 많고 활기찬 성격으로, 다양한 상황에 유연하게 적응하며 주변 사람들에게 즐거움을 줍니다. ENTP의 활발한 에너지와 잘 맞습니다."
-    },
-    "INFP": {
-        "pokemon": "이브이",
-        "image": "https://assets.pokemon.com/assets/cms2/img/pokedex/full/133.png",
-        "reason": "INFP는 따뜻한 마음과 풍부한 상상력을 지닌 유형입니다. 이브이는 다양한 형태로 진화할 수 있는 잠재력을 가진 포켓몬으로, 자신의 가치에 따라 다양한 가능성을 꿈꾸는 INFP와 닮았습니다."
-    }
-    # 필요 시 계속 추가 가능
-}
+# 출력
+for p in popular_pokemon:
+    st.markdown(f"## 🥇 {p['rank']}위 - {p['name']}")
+    st.image(p["image"], width=200, caption=p["name"])
+    st.write(p["desc"])
+    st.markdown("---")
 
-selected_mbti = st.selectbox("당신의 MBTI를 선택하세요:", mbti_types)
-
-if selected_mbti and selected_mbti in mbti_pokemon:
-    data = mbti_pokemon[selected_mbti]
-    st.subheader(f"🎉 {selected_mbti}와 어울리는 포켓몬은...")
-
-    st.image(data["image"], caption=f"{data['pokemon']}", use_column_width=True)
-    st.markdown(f"### 🐾 {data['pokemon']}")
-    st.write(data["reason"])
-else:
-    st.warning("선택된 MBTI에 대한 포켓몬 정보가 아직 등록되지 않았습니다.")
+       
